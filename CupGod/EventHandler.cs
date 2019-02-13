@@ -32,10 +32,10 @@ namespace CupGod
         {
             if (ev.Item.ItemType == Smod2.API.ItemType.CUP)
             {
-                PlayerSettings playerSettings = new PlayerSettings(ev.Player.SteamId);
-                playerSettings.godMode = true;
-
+                ev.Player.SetGodmode(true);
                 playerSteamId.Add(ev.Player.SteamId);
+
+                ev.Player.SendConsoleMessage("You're god!");
             }
         }
 

@@ -11,10 +11,10 @@ namespace CupGod
 {
     [PluginDetails(
         author = "overfriended",
-        name = "Test",
+        name = "Cup God",
         description = "CupGod is a plugin that when you drop a cup, you become god. You cannot do damage.",
         id = "overfriended.cup.god",
-        version = "1.0",
+        version = "1.0.1",
         SmodMajor = 3,
         SmodMinor = 0,
         SmodRevision = 0
