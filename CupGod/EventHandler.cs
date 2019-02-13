@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace CupGod
 {
-    class EventHandler : IEventHandlerPlayerDropItem, IEventHandlerPlayerHurt, IEventHandlerPlayerDie
+    class EventHandler : IEventHandlerPlayerDropItem, IEventHandlerPlayerHurt
     {
         private readonly CupGod plugin;
 
         List<string> playerSteamId = new List<string>();
-
+        String playerRank;
+        String playerColor;
 
         public EventHandler(CupGod plugin)
         {
@@ -31,15 +32,38 @@ namespace CupGod
         public void OnPlayerDropItem(PlayerDropItemEvent ev)
         {
             if (ev.Item.ItemType == Smod2.API.ItemType.CUP)
-            {
-                playerSteamId.Add(ev.Player.SteamId);
+            { 
+                if (playerSteamId.Contains(ev.Player.SteamId))
+                {
+                    playerSteamId.Remove(ev.Player.SteamId);
 
-                ev.Player.SendConsoleMessage("The Cup of God has granted your wishes, and you now have the blessings of God!");
-                ev.Player.SetRank("blue_green", "Blessed");
-                CupGod.CupGods++;
+                    plugin.Info($"Player {ev.Player.Name} (rank {ev.Player.GetRankName()}) has been removed from the blessing of the Cup God.");
 
+                    ev.Player.SendConsoleMessage("Your blessing of the Cup God has been revoked.");
+
+                    ev.Player.SetRank(playerColor, playerRank);
+                } else if (CupGod.CupGods == 0 && !playerSteamId.Contains(ev.Player.SteamId))
+                {
+                    playerSteamId.Add(ev.Player.SteamId);
+
+                    plugin.Info($"Player {ev.Player.Name} (rank {ev.Player.GetRankName()}) has been added to the blessing of the Cup God");
+
+                    ev.Player.SendConsoleMessage("You have been granted the blessing of the Cup God.");
+
+                    CupGod.CupGods++;
+
+                    playerRank = ev.Player.GetUserGroup().Name;
+                    playerColor = ev.Player.GetUserGroup().Color;
+
+                    ev.Player.SetRank("blue_green", "Blessing of the Cup God");
+                } else if (CupGod.CupGods > 0 && !playerSteamId.Contains(ev.Player.SteamId))
+                {
+                    plugin.Info($"Player {ev.Player.Name} (rank {ev.Player.GetRankName()}) tried to obtain the blessing but someone beat them to it.");
+
+                    ev.Player.SendConsoleMessage($"I am sorry, but {playerSteamId.First()} is already Cup God.");
+                }
             }
-        }
+        } 
 
         public void OnPlayerHurt(PlayerHurtEvent ev)
         {
@@ -54,9 +78,11 @@ namespace CupGod
             }
         }
 
-        public void OnRoundEnd(IEventHandlerRoundEnd ev)
+        public void OnRoundEnd(RoundEndEvent ev)
         {
             playerSteamId.Clear();
+            plugin.Info("Round end reason: " + ev.Status);
+            CupGod.CupGods = 0;
         }
         public void OnCheckRoundEnd(CheckRoundEndEvent ev)
         {

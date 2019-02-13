@@ -14,7 +14,7 @@ namespace CupGod
         name = "Cup God",
         description = "CupGod is a plugin that when you drop a cup, you become god. You cannot do damage.",
         id = "overfriended.cup.god",
-        version = "1.0.2",
+        version = "1.1.0",
         SmodMajor = 3,
         SmodMinor = 0,
         SmodRevision = 0
