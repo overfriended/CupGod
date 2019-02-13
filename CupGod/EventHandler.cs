@@ -41,6 +41,8 @@ namespace CupGod
 
                     ev.Player.SendConsoleMessage("Your blessing of the Cup God has been revoked.");
 
+                    CupGod.CupGods = 0;
+
                     ev.Player.SetRank(playerColor, playerRank);
                 } else if (CupGod.CupGods == 0 && !playerSteamId.Contains(ev.Player.SteamId))
                 {
