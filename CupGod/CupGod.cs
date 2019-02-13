@@ -24,12 +24,12 @@ namespace CupGod
 
         public override void OnDisable()
         {
-            this.Info(this.Details.name + "disabled");
+            this.Info(this.Details.name + " disabled");
         }
 
         public override void OnEnable()
         {
-            this.Info(this.Details.name + "enabled");
+            this.Info(this.Details.name + " enabled");
         }
 
         public override void Register()
