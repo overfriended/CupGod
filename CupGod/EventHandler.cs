@@ -43,6 +43,9 @@ namespace CupGod
 
                     CupGod.CupGods = 0;
 
+                    playerRank = ev.Player.GetUserGroup().Name;
+                    playerColor = ev.Player.GetUserGroup().Color;
+
                     ev.Player.SetRank(playerColor, playerRank);
                 } else if (CupGod.CupGods == 0 && !playerSteamId.Contains(ev.Player.SteamId))
                 {
@@ -53,9 +56,6 @@ namespace CupGod
                     ev.Player.SendConsoleMessage("You have been granted the blessing of the Cup God.");
 
                     CupGod.CupGods++;
-
-                    playerRank = ev.Player.GetUserGroup().Name;
-                    playerColor = ev.Player.GetUserGroup().Color;
 
                     ev.Player.SetRank("blue_green", "Blessing of the Cup God");
                 } else if (CupGod.CupGods > 0 && !playerSteamId.Contains(ev.Player.SteamId))
@@ -76,7 +76,10 @@ namespace CupGod
             if (playerSteamId.Contains(ev.Player.SteamId))
             {
                 ev.Damage = 0;
-                ev.Attacker.Damage(10, DamageType.NUKE);
+                if (ev.Attacker is Player)
+                {
+                    ev.Attacker.Damage(10, DamageType.NUKE);
+                }
             }
         }
 
